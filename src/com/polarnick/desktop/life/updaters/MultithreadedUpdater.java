@@ -29,7 +29,12 @@ public class MultithreadedUpdater extends Updater {
         this.state = new int[height * width];
         this.nextState = new int[height * width];
 
-        // 2.0 TODO заполнить this.state случайными числами (как и в SimpleUpdater)
+        Random r = new Random(239);
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                state[y * width + x] = r.nextInt(n);
+            }
+        }
     }
 
     @Override
@@ -55,13 +60,25 @@ public class MultithreadedUpdater extends Updater {
     }
 
     private void update() throws InterruptedException {
-        // 2.2 TODO заменить однопоточные вычисления многопоточными - считая в каждом потоке ровно его часть работы
-        // полезные классы: ExecutorService (см this.executors), CountDownLatch(int count) и его метод CountDownLatch.countDown(), который уменьшает значение счетчика работ которые еще не досчитались
-        CountDownLatch workToExecute = new CountDownLatch(-1 /*подставить сюда вместо -1: число задач для вычисления которые мы собираемся ожидать*/);
+        final CountDownLatch latch = new CountDownLatch(nthreads); // счетчик выполненной работы
 
-        // ...
+        for (int ithread = 0; ithread < nthreads; ++ithread) {
+            executors.execute(new Runnable() {
+                @Override
+                public void run() {
 
-        workToExecute.await(); // теперь нужно как-то дождаться выполнения всех частей работы во всех использованных потоках, возможно поможет счетчик работ CountDownLatch и его метод CountDownLatch.await()? Который дожидается, пока счетчик работы не дойдет до нуля
+                    throw new UnsupportedOperationException();
+
+                    // 2.2 TODO заменить однопоточные вычисления многопоточными - считая в каждом потоке ровно его часть работы
+                    // update(state, nextState, width, height, n, ...);
+
+                    // latch.countDown(); // уменьшаем счетчик - т.е. этот поток уже свою работу посчитал
+                }
+            });
+        }
+
+        // теперь нужно дождаться выполнения всех частей работы:
+        // latch.await(); // 2.3 TODO раскомментировать и осознать зачем это нужно, и что происходит если это не делать
     }
 
     private static void update(int[] cur, int[] next, int width, int height, int n) {

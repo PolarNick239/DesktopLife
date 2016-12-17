@@ -48,9 +48,8 @@ public class LifeDrawerThread implements Runnable {
 
         Random r = new Random(239);
         for (int i = 0; i < n; ++i) {
-            // * TODO генерировать симпатичную палитру :)
+            // TODO* генерировать симпатичную палитру :)
             // Например тут можно подглядеть: http://stackoverflow.com/questions/43044/algorithm-to-randomly-generate-an-aesthetically-pleasing-color-palette
-            // Или посмотри это видео: https://www.youtube.com/watch?v=FIRT7lf8byw
             colors[i] = color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
         }
         return colors;
@@ -71,8 +70,7 @@ public class LifeDrawerThread implements Runnable {
                 updater.setup(img.getWidth(), img.getHeight(), n);
             }
 
-            // 1.2 TODO замерять время вычисления функции updater.next() (System.currentTimeMillis())
-            int[] state;
+            int[] state; // 1.3 TODO сохранить время вычисления функции updater.next() в переменную passed (System.currentTimeMillis())
             try {
                 state = updater.next();
             } catch (InterruptedException e) {
@@ -87,9 +85,8 @@ public class LifeDrawerThread implements Runnable {
                 pixels[i] = colorsPalette[state[i]]; // По состоянию берем цвет и кладем его в положение где находится это состояние
             }
 
-            // 1.3 TODO выводить сообщение с временем вычисления updater.next() + количество обрабатываемых клеток в секунду (в миллионах в секунду)
-            // Чтобы понять, как число превратить в строку рекомендую призвать на помощь могучий интернет мантрой навроде "java как int в string"
-            String message = ...;
+            float megapixelsPerSec = img.getHeight() * img.getWidth() * 1000.0f / 1000_000.0f / passed;
+            String message = passed + " ms, " + String.format(java.util.Locale.US, "%.2f", megapixelsPerSec) + " MP/s";
             message += " - " + updater.getName();
             mainFrame.paint(img, message);
         }
@@ -100,7 +97,8 @@ public class LifeDrawerThread implements Runnable {
     }
 
     public void nextUpdater() {
-        // 2.3 TODO сделать так, чтобы начал использоваться другой метод вычисления + надо как-то добавить в перечень алгоритмов - MultithreadedUpdater
+        // 2.4 TODO сделать так, чтобы начал использоваться другой метод вычисления + надо как-то добавить в перечень алгоритмов - MultithreadedUpdater
+        // curUpdater = ...;
     }
 
     private static int color(int r, int g, int b) {

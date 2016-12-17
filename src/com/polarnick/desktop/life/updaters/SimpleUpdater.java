@@ -24,7 +24,12 @@ public class SimpleUpdater extends Updater {
         this.state = new int[height * width];
         this.nextState = new int[height * width];
 
-        // 1.0 TODO заполнить this.state случайными числами - поможет класс Random
+        Random r = new Random(239);
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                state[y * width + x] = r.nextInt(n);
+            }
+        }
     }
 
     @Override
@@ -54,8 +59,25 @@ public class SimpleUpdater extends Updater {
     }
 
     private static void update(int[] cur, int[] next, int width, int height, int n) {
-        // 1.1 TODO посчитать следующее состояние клеточного автомата next по текущему состоянию cur
-        ...
+        int dx[] = {-1, 0, 1, 1, 1, 0, -1, -1};
+        int dy[] = {-1, -1, -1, 0, 1, 1, 1, 0};
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                boolean succeeded = false;
+
+                for (int i = 0; i < dx.length; ++i) {
+                    int neighbourX = x + dx[i];
+                    int neighbourY = y + dy[i];
+
+                    if (...) { // 1.1 TODO проверить 'поглощает' ли сосед текущую клетку?
+                        succeeded = true;
+                    }
+                }
+
+                // 1.2 TODO посчитать состояние текущей клетки в следующий момент времени
+                next[width * y + x] = ...;
+            }
+        }
     }
 
 }
