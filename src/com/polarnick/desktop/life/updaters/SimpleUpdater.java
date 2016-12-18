@@ -28,6 +28,11 @@ public class SimpleUpdater extends Updater {
     }
 
     @Override
+    public void setState(int[] state) {
+        System.arraycopy(state, 0, this.state, 0, state.length);
+    }
+
+    @Override
     public void cleanup() {
         this.width = 0;
         this.height = 0;
@@ -55,7 +60,7 @@ public class SimpleUpdater extends Updater {
 
     private static void update(int[] cur, int[] next, int width, int height, int n) {
         // 1.1 TODO посчитать следующее состояние клеточного автомата next по текущему состоянию cur
-        ...
+//        ...
     }
 
 }
