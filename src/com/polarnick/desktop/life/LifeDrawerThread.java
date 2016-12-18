@@ -7,7 +7,7 @@ import com.polarnick.desktop.life.updaters.SimpleUpdater;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -39,8 +39,10 @@ public class LifeDrawerThread implements Runnable {
 
         this.n = n;
         this.colorsPalette = generateColors(n);
-        this.updaters = Arrays.<Updater>asList(new SimpleUpdater());
+        this.updaters = new ArrayList<>();
         this.curUpdater = 0;
+
+        this.updaters.add(new SimpleUpdater());
     }
 
     private static int[] generateColors(int n) {
